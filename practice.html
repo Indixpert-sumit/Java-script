@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Averages</title>
+</head>
+
+<body>
+    <script>
+        const students = [
+            { name: "Alice", marks: [80, 90, 85] },
+            { name: "Bob", marks: [70, 75, 72] },
+            { name: "Charlie", marks: [95, 92, 88] }
+        ];
+
+        const data = [];
+
+        students.forEach(student => {
+            const sum = student.marks.reduce((a, b) => a + b, 0);
+            const average = sum / student.marks.length;
+            data.push({ name: student.name, average: average });
+        });
+
+        console.log(data);
+    </script>
+</body>
+
+</html>
