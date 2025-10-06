@@ -2,25 +2,34 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
 </head>
 
 <body>
     <script>
-        function result(){
         const students = [
-            { name: "alice", marks: [80, 90, 85] },
-            { name: "bob", marks: [70, 75, 72] },
-            { name: "charlie", marks: [95, 92, 88] }
+            { name: "Alice", marks: [80, 90, 85] },
+            { name: "Bob", marks: [70, 75, 72] },
+            { name: "Charlie", marks: [95, 92, 88] }
         ];
 
-        students.map(function (students) {
-            console.log(students.name,students.marks);
-        });
+        function generateReport(students) {
+            const total = [];
 
-    }
-
-    console.log(result)
-
+            students.forEach(student => {
+                let sum = 0;
+                for (let i = 0; i < student.marks.length; i++) {
+                    sum += student.marks[i];
+                }
+                const average = sum / student.marks.length;
+                const data = `${student.name} average = ${average.toFixed()}`;
+                total.push(data);
+            });
+            return total;
+        }
+        console.log(generateReport(students));
 
     </script>
 </body>

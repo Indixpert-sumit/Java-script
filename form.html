@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form</title>
+</head>
+
+<body>
+    <form action="" id="user_form">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="">
+        </div>
+
+
+        <input type="submit" name="submit" value="submit">
+    </form>
+
+
+    <script>
+        let user = document.getElementById('user_form');
+        user.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let nameEL = user.querySelector('#name');
+            let name = nameEL?.value;
+            console.log('Name:', name);
+            if (name<3){
+                
+            }
+        });
+        const validateName = (str) => {
+            if (str === '' || str.lenght < 3) return false;
+            return true
+        }
+
+
+    </script>
+</body>
+
+</html>
