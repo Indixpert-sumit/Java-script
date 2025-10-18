@@ -39,7 +39,7 @@
     </select><br>
     <span class="error" id="genderError"></span><br><br>
 
-    <label>Skills (select at least one):</label><br>
+    <label>Skills</label><br>
     <input type="checkbox" name="skills" value="C"> C
     <input type="checkbox" name="skills" value="Python"> Python
     <input type="checkbox" name="skills" value="HTML"> HTML
@@ -61,7 +61,6 @@
       e.preventDefault();
 
       document.querySelectorAll(".error").forEach(el => el.textContent = "");
-      document.getElementById("formSuccess").textContent = "";
 
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
@@ -71,11 +70,11 @@
       const gender = document.getElementById("gender").value;
       const skills = document.querySelectorAll('input[name="skills"]:checked');
 
-      let isValid = true;
+      let Valid = false;
 
       if (name.length < 3) {
-        document.getElementById("nameError").textContent = "Enter full name (min 3 chars, first & last).";
-        isValid = false;
+        document.getElementById("nameError").textContent = "Enter atleast 3 character of your name";
+        isValid = true;
       }
 
       const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
@@ -118,7 +117,6 @@
     });
 
     form.addEventListener("reset", () => {
-      document.querySelectorAll(".error").forEach(el => el.textContent = "");
       document.getElementById("formSuccess").textContent = "";
     });
   </script>
