@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital & Analog Clock</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Digital Clock */
+        .digital-clock {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .digital-clock h1 {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .time-display {
+            font-size: 4em;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .date-display {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .day-display {
+            font-size: 1.1em;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Analog Clock */
+        .analog-clock {
+            width: 300px;
+            height: 300px;
+            border: 10px solid white;
+            border-radius: 50%;
+            position: relative;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3),
+                        inset 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .clock-face {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .center {
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 10px;
+        }
+
+        .hour-hand {
+            width: 6px;
+            height: 80px;
+            background: #333;
+            margin-left: -3px;
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 110px;
+            background: #667eea;
+            margin-left: -2px;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 120px;
+            background: #ff6b6b;
+            margin-left: -1px;
+        }
+
+        /* Clock Numbers */
+        .number {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .number span {
+            display: inline-block;
+            padding: 10px;
+            position: absolute;
+        }
+
+        /* Tick marks */
+        .tick {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: #333;
+            left: 50%;
+            margin-left: -1px;
+            transform-origin: bottom 150px;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                gap: 30px;
+            }
+
+            .analog-clock {
+                width: 250px;
+                height: 250px;
+            }
+
+            .time-display {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Digital Clock -->
+        <div class="digital-clock">
+            <h1>Digital Time</h1>
+            <div class="time-display" id="digitalTime">00:00:00</div>
+            <div class="date-display" id="dateDisplay">January 1, 2024</div>
+            <div class="day-display" id="dayDisplay">Monday</div>
+        </div>
+
+        <!-- Analog Clock -->
+        <div class="analog-clock">
+            <div class="clock-face">
+                <!-- Hour hand -->
+                <div class="hand hour-hand" id="hourHand"></div>
+                <!-- Minute hand -->
+                <div class="hand minute-hand" id="minuteHand"></div>
+                <!-- Second hand -->
+                <div class="hand second-hand" id="secondHand"></div>
+                <!-- Center dot -->
+                <div class="center"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const digitalTime = document.getElementById('digitalTime');
+        const dateDisplay = document.getElementById('dateDisplay');
+        const dayDisplay = document.getElementById('dayDisplay');
+        const hourHand = document.getElementById('hourHand');
+        const minuteHand = document.getElementById('minuteHand');
+        const secondHand = document.getElementById('secondHand');
+
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+
+        function updateClock() {
+            const now = new Date();
+
+            // Digital Clock
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            digitalTime.textContent = `${hours}:${minutes}:${seconds}`;
+
+            // Date and Day
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            const day = days[now.getDay()];
+
+            dateDisplay.textContent = `${month} ${date}, ${year}`;
+            dayDisplay.textContent = day;
+
+            // Analog Clock
+            const totalSeconds = now.getSeconds();
+            const totalMinutes = now.getMinutes() + totalSeconds / 60;
+            const totalHours = now.getHours() % 12 + totalMinutes / 60;
+
+            const secondDegrees = (totalSeconds / 60) * 360;
+            const minuteDegrees = (totalMinutes / 60) * 360;
+            const hourDegrees = (totalHours / 12) * 360;
+
+            secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+            minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
+            hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+        }
+
+        // Update immediately
+        updateClock();
+
+        // Update every 1000ms
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>

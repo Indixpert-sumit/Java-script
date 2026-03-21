@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Light</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .traffic-light-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .traffic-light {
+            background: #222;
+            border-radius: 40px;
+            padding: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5),
+                        inset 0 0 20px rgba(0, 0, 0, 0.8);
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .light {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .light.inactive {
+            opacity: 0.3;
+            box-shadow: none;
+        }
+
+        /* Red Light */
+        .red {
+            background: #ff4444;
+        }
+
+        .red.active {
+            background: #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8),
+                        inset 0 0 20px rgba(255, 100, 100, 0.5);
+            animation: pulse-red 1s infinite;
+        }
+
+        /* Yellow Light */
+        .yellow {
+            background: #ffdd44;
+        }
+
+        .yellow.active {
+            background: #ffff00;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.8),
+                        inset 0 0 20px rgba(255, 255, 100, 0.5);
+            animation: pulse-yellow 1s infinite;
+        }
+
+        /* Green Light */
+        .green {
+            background: #44ff44;
+        }
+
+        .green.active {
+            background: #00ff00;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8),
+                        inset 0 0 20px rgba(100, 255, 100, 0.5);
+            animation: pulse-green 1s infinite;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.8), inset 0 0 20px rgba(255, 100, 100, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(255, 0, 0, 1), inset 0 0 30px rgba(255, 100, 100, 0.8); }
+        }
+
+        @keyframes pulse-yellow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 255, 0, 0.8), inset 0 0 20px rgba(255, 255, 100, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(255, 255, 0, 1), inset 0 0 30px rgba(255, 255, 100, 0.8); }
+        }
+
+        @keyframes pulse-yellow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 255, 0, 0.8), inset 0 0 20px rgba(255, 255, 100, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(255, 255, 0, 1), inset 0 0 30px rgba(255, 255, 100, 0.8); }
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.8), inset 0 0 20px rgba(100, 255, 100, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(0, 255, 0, 1), inset 0 0 30px rgba(100, 255, 100, 0.8); }
+        }
+
+        .timer {
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 20px;
+            min-height: 25px;
+        }
+
+        .pedestrian {
+            color: white;
+            margin-top: 30px;
+            font-size: 1.1em;
+        }
+
+        .button-group {
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .start-btn {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .start-btn:hover {
+            background: #00cc00;
+            transform: scale(1.05);
+        }
+
+        .stop-btn {
+            background: #ff4444;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #ff0000;
+            transform: scale(1.05);
+        }
+
+        .reset-btn {
+            background: #4488ff;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #2266ff;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚦 Traffic Light System</h1>
+
+        <div class="traffic-light-container">
+            <!-- Normal Traffic Light -->
+            <div>
+                <h3 style="color: white; margin-bottom: 15px;">Auto Mode</h3>
+                <div class="traffic-light" id="autoLight">
+                    <div class="light red inactive" id="autoRed"></div>
+                    <div class="light yellow inactive" id="autoYellow"></div>
+                    <div class="light green inactive" id="autoGreen"></div>
+                    <div class="timer" id="autoTimer">-</div>
+                    <div class="status" id="autoStatus"></div>
+                </div>
+            </div>
+
+            <!-- Pedestrian Traffic Light -->
+            <div>
+                <h3 style="color: white; margin-bottom: 15px;">Pedestrian Mode</h3>
+                <div class="traffic-light" id="pedestrianLight" style="width: 120px;">
+                    <div class="light red inactive" id="pedRed" style="width: 80px; height: 80px;"></div>
+                    <div class="light green inactive" id="pedGreen" style="width: 80px; height: 80px;"></div>
+                    <div class="timer" id="pedTimer" style="font-size: 1.2em;">-</div>
+                    <div class="status" id="pedStatus"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="start-btn" onclick="startTraffic()">Start</button>
+            <button class="stop-btn" onclick="stopTraffic()">Stop</button>
+            <button class="reset-btn" onclick="resetTraffic()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        let isRunning = false;
+        let currentLight = 'red';
+        let timeLeft = 0;
+        let interval = null;
+
+        const timings = {
+            red: 10,
+            yellow: 3,
+            green: 7
+        };
+
+        const pedestrianTimings = {
+            red: 10,
+            green: 7
+        };
+
+        function startTraffic() {
+            if (isRunning) return;
+            isRunning = true;
+            
+            if (currentLight === 'red' && timeLeft === 0) {
+                timeLeft = timings.red;
+            }
+
+            interval = setInterval(() => {
+                timeLeft--;
+
+                if (timeLeft <= 0) {
+                    // Move to next light
+                    if (currentLight === 'red') {
+                        currentLight = 'green';
+                        timeLeft = timings.green;
+                    } else if (currentLight === 'green') {
+                        currentLight = 'yellow';
+                        timeLeft = timings.yellow;
+                    } else if (currentLight === 'yellow') {
+                        currentLight = 'red';
+                        timeLeft = timings.red;
+                    }
+                }
+
+                updateDisplay();
+            }, 1000);
+
+            updateDisplay();
+        }
+
+        function stopTraffic() {
+            isRunning = false;
+            clearInterval(interval);
+            updateDisplay();
+        }
+
+        function resetTraffic() {
+            isRunning = false;
+            clearInterval(interval);
+            currentLight = 'red';
+            timeLeft = 0;
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            // Auto Light
+            document.getElementById('autoRed').classList.remove('active', 'inactive');
+            document.getElementById('autoYellow').classList.remove('active', 'inactive');
+            document.getElementById('autoGreen').classList.remove('active', 'inactive');
+
+            document.getElementById('autoRed').classList.add(currentLight === 'red' ? 'active' : 'inactive');
+            document.getElementById('autoYellow').classList.add(currentLight === 'yellow' ? 'active' : 'inactive');
+            document.getElementById('autoGreen').classList.add(currentLight === 'green' ? 'active' : 'inactive');
+
+            // Update auto timer and status
+            document.getElementById('autoTimer').textContent = isRunning ? timeLeft : '-';
+            
+            let statusText = '';
+            if (currentLight === 'red') {
+                statusText = '🛑 STOP';
+            } else if (currentLight === 'yellow') {
+                statusText = '⚠️ CAUTION';
+            } else {
+                statusText = '✅ GO';
+            }
+            document.getElementById('autoStatus').textContent = isRunning ? statusText : '-';
+
+            // Pedestrian Light (opposite of car)
+            const pedLight = currentLight === 'red' ? 'green' : 'red';
+            const pedTime = currentLight === 'red' ? timings.red : timings.green + timings.yellow;
+
+            document.getElementById('pedRed').classList.remove('active', 'inactive');
+            document.getElementById('pedGreen').classList.remove('active', 'inactive');
+
+            document.getElementById('pedRed').classList.add(pedLight === 'red' ? 'active' : 'inactive');
+            document.getElementById('pedGreen').classList.add(pedLight === 'green' ? 'active' : 'inactive');
+
+            document.getElementById('pedTimer').textContent = isRunning ? timeLeft : '-';
+            let pedStatus = pedLight === 'red' ? '🛑 WAIT' : '✅ WALK';
+            document.getElementById('pedStatus').textContent = isRunning ? pedStatus : '-';
+        }
+
+        // Initialize
+        updateDisplay();
+    </script>
+</body>
+</html>
